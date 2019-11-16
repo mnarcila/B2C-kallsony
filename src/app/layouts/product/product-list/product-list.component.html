@@ -1,0 +1,106 @@
+<br>
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-3">
+
+      <div class="form-group">
+        <label for="brand_select">Categoria:</label>
+        <select class="form-control" [(ngModel)]="selCategoria" id="brand_select">
+          <option value='0'></option>
+          <option *ngFor="let categoria of categoriasArray" [ngValue]="categoria.value">{{categoria.viewValue}}</option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <label for="brand_select">Busqueda:</label>
+        <input type="text" class="form-control" [(ngModel)]="conBusqueda" />
+      </div>
+      <div class="form-group">
+        <label for="brand_select">Tipo Búsqueda:</label>
+        <br /><input type="radio" value="1" name="gender" [(ngModel)]="tipoBusqueda"> Cod. Producto
+        <br /><input type="radio" value="2" name="gender" [(ngModel)]="tipoBusqueda"> Nombre
+        <br /><input type="radio" value="3" name="gender" [(ngModel)]="tipoBusqueda"> Descripción
+
+
+      </div>
+      <div class="form-group">
+        <button mat-raised-button (click)="consultarProducto()" class="btn btn-rose pull-right">Consultar
+          Producto</button>
+      </div>
+
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="container">
+        <app-card-loader [loop]="3" [height]="800" *ngIf="loading"></app-card-loader>
+        <div class="row" *ngIf="!loading">
+          <!-- List of Products -->
+          <div class="col-sm-4 mb-2"
+            *ngFor="let product of productList |  paginate: { itemsPerPage: 6, currentPage: page }">
+            <div class="item">
+              <div class=" mb-r">
+                <!--Card-->
+                <div class="card card-cascade wider">
+                  <!--Card image-->
+                  <a [routerLink]="['/products/product', product.idProducto]">
+                    <div class="view overlay hm-white-slight">
+                      <img style="width:300px; height: 150px;"
+                        [src]="sanitizer.bypassSecurityTrustResourceUrl(rutaImagen+product.rutaImagen)"
+                        class="img-fluid" alt="" width="360px" height="640px">
+                      <a>
+                        <div class="mask waves-effect waves-light" mdbRippleRadius></div>
+                      </a>
+                    </div>
+                  </a>
+                  <!--/.Card image-->
+                  <!--Card content-->
+                  <div class="card-body text-center no-padding">
+                    <!--Category & Title-->
+                    <a class="text-muted">
+                      <h5>{{ consultarCategoria(product.idCategoria) }}</h5>
+                    </a>
+                    <p class="card-title">
+                      <strong>
+                        <a [routerLink]="['/products/product', product.idProducto]"
+                          routerLinkActive="router-link-active">{{
+                          product.nombre }}</a>
+                      </strong>
+                    </p>
+                    <!--Description-->
+                    <p class="card-text">{{ product.descripcion }}
+                    </p>
+                    <!--Card footer-->
+                    <div class="card-footer">
+                      <span class="left">COP {{ product.valorBase | number}}</span>
+                      <span class="right">
+
+                        <a placement="top" mdbTooltip="Agregar a carrito" container="body" (click)="addToCart(product)">
+                          <i class="fa fa-shopping-cart"></i>
+                        </a>
+
+                      </span>
+                    </div>
+
+                  </div>
+                  <!--/.Card content-->
+
+                </div>
+                <!--/.Card-->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="text-center mt-3">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+      <!--/.Card-->
+    </div>
+  </div>
+</div>
+<app-add-product></app-add-product>

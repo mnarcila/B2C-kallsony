@@ -1,0 +1,143 @@
+<div class="card-body">
+  <h2>Direcciones</h2>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <input mdbActive type="button" class="form-control" (click)="agregarDir()" value="Agregar Dir" />
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="crearDireccion">
+    <div class="row">
+      <div class="col-md-8">
+        <form #loginForm="ngForm" (ngSubmit)="crearDatos(loginForm)">
+
+          <h4 class="card-title mt-0"> Crear Dirección </h4>
+          <table>
+            <tr>
+              <td> <label for="direccion">Dirección </label> </td>
+              <td><input mdbActive type="text" id="direccion" class="form-control" name="direccion"
+                  [(ngModel)]="direccion.direccion" placeholder="" mdbInputValidate autocomplete="direccion" /> </td>
+            </tr>
+            <tr>
+              <td> <label for="pais">País </label> </td>
+              <td>
+                <select class="form-control" name="pais" [(ngModel)]="direccion.pais" id="pais">
+                  <option *ngFor="let pais of listaPaises" [ngValue]="pais.value">{{pais.viewValue}}
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="ciudad">Ciudad</label>
+              </td>
+              <td><input mdbActive type="text" id="ciudad" class="form-control" name="ciudad" placeholder=""
+                  [(ngModel)]="direccion.ciudad" mdbInputValidate autocomplete="ciudad" /></td>
+            </tr>
+            <tr>
+              <td> <label for="tpDireccion">Tipo Direción</label></td>
+              <td> <input mdbActive type="text" id="tpDireccion" class="form-control" name="tpDireccion"
+                  [(ngModel)]="direccion.tipodireccion" mdbInputValidate autocomplete="tpDireccion" /></td>
+            </tr>
+          </table>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" class="form-control" id="loginButton" mdbRippleRadius> Crear
+              </button>
+            </div>
+
+          </div>
+        </form>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+
+  <strong *ngIf="direcciones.length == 0">Sin datos..</strong>
+  <table *ngIf="direcciones.length > 0" class="table">
+    <thead class=" text-primary">
+      <th>Dirección</th>
+      <th>País</th>
+      <th>Ciudad</th>
+      <th>Tipo de Dirección</th>
+      <th>Estado</th>
+      <th>Seleccionar</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dir of direcciones">
+        <td hidden>{{dir.iddireccion}}</td>
+        <td>{{dir.direccion}}</td>
+        <td>{{dir.pais}}</td>
+        <td>{{dir.ciudad}}</td>
+        <td>{{dir.tipodireccion}}</td>
+        <td>{{dir.estado}}</td>
+        <td><i *ngIf="dir.estado=='ACTIVO'" class="material-icons" style="cursor: pointer;color: red;"
+            (click)="$event.stopPropagation();eliminarDireccion(dir)">Inactivar</i>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Tarjeta de Credito</h2>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <input mdbActive type="button" class="form-control" (click)="agregarTC()" value="Agregar TC" />
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="crearTarjeta">
+    <div class="row">
+      <div class="col-md-8">
+        <form #loginForm="ngForm" (ngSubmit)="crearTarjetaEvent(loginForm)">
+
+          <!-- <form #TcForm="TcForm" (ngSubmit)="crearTarjetaEvent(TcForm)"> -->
+
+          <h4 class="card-title mt-0"> Crear Tarjeta </h4>
+          <table>
+            <tr>
+              <td> <label for="numtarjeta">Número TC </label> </td>
+              <td><input mdbActive type="number"  id="numtarjeta" class="form-control" name="numtarjeta"
+                  [(ngModel)]="tc.numtarjeta" placeholder="" mdbInputValidate autocomplete="numtarjeta" /> </td>
+            </tr>
+            <tr>
+              <td> <label for="franquicia">Franquicia </label> </td>
+              <td>
+                <select name="franquicia" class="form-control" [(ngModel)]="franquicia" id="franquicia">
+                  <option *ngFor="let franq of franquicias" [ngValue]="franq.value">{{franq.viewValue}}
+                </select>
+              </td>
+            </tr>
+          </table>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" class="form-control" id="loginButton" mdbRippleRadius> Crear
+              </button>
+            </div>
+
+          </div>
+        </form>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tabla de tarjeta s-->
+  <strong *ngIf="tcs.length == 0">Sin datos..</strong>
+  <table *ngIf="tcs.length > 0" class="table">
+    <thead class=" text-primary">
+      <th>Número de Tarjeta</th>
+      <th>Franquicia</th>
+      <th>Fecha Creación</th>
+      <th>Estado</th>
+      <th>Seleccionar</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tc of tcs">
+        <td>{{tc.numtarjeta}}</td>
+        <td>{{tc.franquicia}}</td>
+        <td>{{tc.fechacreacion}}</td>
+        <td>{{tc.estado}}</td>
+
+        <td><i *ngIf="tc.estado=='ACTIVO'" class="material-icons" style="cursor: pointer;color: red;"
+            (click)="$event.stopPropagation();eliminarTarjeta(tc)">Inactivar</i>
+      </tr>
+    </tbody>
+  </table>
+</div>

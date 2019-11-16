@@ -1,0 +1,71 @@
+<div class="container mt-3">
+  <div class="col-md order-md-1">
+    <h4 class="mb-3">Dirección de envio</h4>
+    <p>Valor Total: {{valorTotal | number}}</p>
+    <form class="needs-validation" #userDetailsForm="ngForm" (ngSubmit)="updateUserDetails(userDetailsForm)">
+      <div class="mb-3">
+        <label for="direccion">Dirección</label>
+        <select class="custom-select d-block w-100" id="direccion" required [(ngModel)]="direccion" name="direccion">
+          <option value=""> </option>
+          <option *ngFor="let dir of direcciones" [ngValue]="dir">{{dir.direccion}}</option>
+        </select>
+        <div class="invalid-feedback">
+          Por favor ingrese dirección
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="direccion">TC - Inscritas </label>
+        <select class="custom-select d-block w-100" id="listTC" required [(ngModel)]="listTC" name="listTC">
+          <option value=""> </option>
+          <option *ngFor="let ta of tcs" [ngValue]="ta">{{ta.numtarjeta}}</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="col-md-5 mb-3">
+          <label for="tcc">Tarjeta de Credito</label>
+          <input type="text" class="form-control" id="tcc" placeholder="" [(ngModel)]="tc" name="tcc" required>
+          <div class="invalid-feedback">
+            Se requiere ingresar TC.
+          </div>
+        </div>
+        <div class="col-md-4 mb-2">
+          <label for="fechaVen">Fecha Vencimiento</label>
+          <input type="text" class="form-control" id="fechaVen" placeholder="" [(ngModel)]="fecha" name="fechaVen"
+            required>
+          <div class="invalid-feedback">
+            Se requiere ingresar TC.
+          </div>
+        </div>
+
+        <div class="col-md-2 mb-1">
+          <label for="cuotas">Cuotas</label>
+
+          <select class="custom-select d-block w-100" id="cuotas" required [(ngModel)]="cuotas" name="cuotas">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+
+          <div class="invalid-feedback">
+            Se requiere ingresar TC.
+          </div>
+        </div>
+
+        <div class="col-md-2 mb-1">
+          <label for="tcc">CVC</label>
+          <input type="text" class="form-control" id="cvc" placeholder="" [(ngModel)]="cvc" name="cvc" required>
+          <div class="invalid-feedback">
+            Se requiere ingresar TC.
+          </div>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <button class="btn btn-primary btn-lg btn-block" type="submit">Realizar compra</button>
+    </form>
+  </div>

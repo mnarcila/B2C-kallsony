@@ -1,0 +1,42 @@
+<form #loginForm="ngForm" (ngSubmit)="editarDatos(loginForm)">
+  <div class="alert alert-danger" role="alert" *ngIf="errorInUserCreate">
+    {{errorMessage.message}}
+  </div>
+  <div class="row">
+
+    <div class="col-md-8 mt-3">
+      <label for="userName">Usuario</label>
+      <p style="font-size: 15px;"><b>{{loggedUser.usuario}}</b></p>
+    </div>
+    <div class="col-md-8 mt-3">
+      <label for="userName">Correo</label>
+      <p style="font-size: 15px;" *ngIf="!renderActualizar"><b>{{loggedUser.email}}</b></p>
+      <input mdbActive type="email" id="emailId" class="form-control" name="emailId" [(ngModel)]="loggedUser.email"
+        placeholder="" mdbInputValidate *ngIf="renderActualizar" autocomplete="emailId">
+    </div>
+
+    <div class="col-md-8 mb-3">
+      <label for="clave">Clave</label>
+      <p style="font-size: 15px;" *ngIf="!renderActualizar"><b>*************</b></p>
+      <input mdbActive type="password" id="clave" class="form-control" name="clave" [(ngModel)]="loggedUser.password"
+        placeholder="" mdbInputValidate *ngIf="renderActualizar" autocomplete="clave">
+    </div>
+
+    <div class="col-md-8 mb-3">
+      <label for="clave">Télefono</label>
+      <p style="font-size: 15px;" *ngIf="!renderActualizar"><b>{{loggedUser.telefono}}</b></p>
+      <input mdbActive type="text" id="telefono" class="form-control" name="telefono" [(ngModel)]="loggedUser.telefono"
+        placeholder="" mdbInputValidate *ngIf="renderActualizar" autocomplete="telefono">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 mb-3">
+      <input mdbActive type="button" *ngIf="!renderActualizar" class="form-control" (click)="permitirUpdate()"
+        readonly="{{!renderActualizar}}" value="{{textoBoton}}" />
+    </div>
+    <div class="col-md-3 mb-3">
+      <button type="submit" *ngIf="renderActualizar" class="form-control" id="loginButton" mdbRippleRadius> Actualizar
+      </button>
+    </div>
+  </div>
+</form>

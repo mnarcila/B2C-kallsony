@@ -1,0 +1,115 @@
+<br>
+<section class="container">
+
+  <!-- Login form -->
+  <div class="col-sm-6">
+    <form style="width:22rem" #loginForm="ngForm" (ngSubmit)="signInWithEmail(loginForm)">
+      <p class="h5 text-center mb-4">Crear usuario</p>
+
+      <div class="form-group">
+        <label for="loginEmailId">Usuario</label>
+        <input type="email" class="form-control" id="loginEmailId" aria-describedby="emailHelp"
+          placeholder="Enter email" name="emailId" [(ngModel)]="user.email" mdbInputValidate [email]="true">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Contraseña</label>
+        <input type="password" class="form-control" id="loginPassword" name="loginPassword"
+          [(ngModel)]="user.password" autocomplete="current-password" placeholder="Password">
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary waves-light" id="loginButton" mdbRippleRadius>Iniciar
+          Sesión
+        </button>
+      </div>
+    </form>
+  </div>
+  <br>
+  <p>Usurio nuevo?
+    <a data-toggle="modal" data-target="#createUserForm" (click)="crearForm()" style="color:dodgerblue">Registrate!</a>
+  </p>
+  <!-- Login form -->
+
+  <!--Modal: Register Form-->
+  <div class="modal fade" id="createUserForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+      <form #userForm="ngForm" (ngSubmit)="addUser(userForm)">
+        <div class="modal-content">
+
+          <div class="modal-header light-blue darken-3 white-text">
+            <h4 class="title">
+              <i class="fa fa-user-plus"></i> Registro</h4>
+            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body" style="overflow: scroll;height: 300px;">
+            <div class="alert alert-danger" role="alert" *ngIf="errorInUserCreate">
+              {{errorMessage.message}}
+            </div>
+            <div class="form-group form-sm">
+              <label for="email">Correo</label>
+              <input mdbActive type="email" id="email" class="form-control" name="email" [(ngModel)]="createUser.email"
+                placeholder="" mdbInputValidate [email]="true" autocomplete="email">
+            </div>
+
+            <div class="form-group form-sm">
+              <label for="password">Clave</label>
+              <input mdbActive type="password" id="password" class="form-control" name="password"
+                [(ngModel)]="createUser.password" placeholder="" mdbInputValidate autocomplete="new-password">
+            </div>
+
+            <div class="form-group form-sm">
+              <label for="usuario">usuario</label>
+              <input mdbActive type="text" id="usuario" class="form-control" name="usuario"
+                [(ngModel)]="createUser.usuario" placeholder="" mdbInputValidate autocomplete="usuario">
+            </div>
+
+            <div class="form-group form-sm">
+              <label for="nombre">Nombre</label>
+              <input mdbActive type="text" id="nombre" class="form-control" name="nombre"
+                [(ngModel)]="createUser.nombre" placeholder="" mdbInputValidate autocomplete="nombre">
+            </div>
+            <div class="form-group form-sm">
+              <label for="apellido">Apellido</label>
+              <input mdbActive type="text" id="apellido" class="form-control" name="apellido"
+                [(ngModel)]="createUser.apellido" placeholder="" mdbInputValidate autocomplete="apellido">
+            </div>
+
+            <div class="form-group form-sm">
+              <label for="telefono">Télefono</label>
+              <input mdbActive type="text" id="telefono" class="form-control" name="telefono"
+                [(ngModel)]="createUser.telefono" placeholder="" mdbInputValidate autocomplete="telefono">
+            </div>
+
+            <div class="form-group form-sm">
+              <label for="tipoidentificacion">Tipo identificación</label>
+
+
+              <select class="form-control" [(ngModel)]="createUser.tipoidentificacion" id="tipoidentificacion">
+                <option value='CC'>Cedula de Ciudadania</option>
+                <option value='CE'>Cedula de Extranjeria</option>
+                <option value='PAS'>Pasaporte</option>
+              </select>
+              <label for="numidentificacion">Número identificación</label>
+              <input mdbActive type="text" id="numidentificacion" class="form-control" name="numidentificacion"
+                [(ngModel)]="createUser.numidentificacion" placeholder="" mdbInputValidate
+                autocomplete="numidentificacion">
+            </div>
+
+
+            <div class="text-center mt-2">
+              <button type="submit" class=" btn btn-info waves-light" id="signUpButton" mdbRippleRadius>Registrar
+                <i class="fa fa-sign-in ml-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>

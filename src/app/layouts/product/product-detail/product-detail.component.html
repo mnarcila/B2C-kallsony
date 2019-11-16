@@ -1,0 +1,46 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="product-image">
+        <div class="view hm-zoom z-depth-2" style="cursor: pointer">
+          <img [src]="sanitizer.bypassSecurityTrustResourceUrl(rutaImagen+producto.rutaImagen)" width="100%"
+            class="img-fluid rounded">
+        </div>
+        <div class="" style="margin-top:15px">
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">PRECIO</h6>
+              </div>
+              <span class="text-muted" style="color:crimson !important">COP {{producto.valorBase | number}}</span>
+            </li>
+         
+          </ul>
+          <button class="btn btn-primary" (click)="addToCart(producto)">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="product-detail">
+        <h5 class="product-head">Detalle del producto</h5>
+        <table class="table" cellspacing="0" style="max-height: 28px">
+          <tbody>
+            <tr>
+              <th scope="row">NOMBRE</th>
+              <td>{{producto.nombre}}</td>
+            </tr>
+            <tr>
+              <th scope="row">DESCRIPCIÓN</th>
+              <td>{{producto.descripcion}}</td>
+            </tr>
+            <tr>
+              <th scope="row">CATEGORÍA</th>
+              <td>{{consultarCategoria(producto)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
