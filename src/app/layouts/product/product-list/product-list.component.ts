@@ -9,6 +9,7 @@ import { CategoriaService } from "../../../_restCategoria";
 import { ProductosInner, ProductoService, ProductoRsType } from "../../../_restProducto";
 import { environment } from 'src/environments/environment.prod';
 import { formatDate } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var $: any;
 export interface Categorias {
@@ -21,6 +22,7 @@ export interface Categorias {
 	styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit {
+
 	productList: ProductosInner[];
 	loading = false;
 	producto: ProductosInner;
@@ -38,6 +40,8 @@ export class ProductListComponent implements OnInit {
 
 	page = 1;
 	constructor(
+
+		public spinner: NgxSpinnerService,
 		public sanitizer: DomSanitizer,
 		private categoriaApi: CategoriaService,
 		private productoApi: ProductoService,
@@ -56,10 +60,10 @@ export class ProductListComponent implements OnInit {
 	consultarProductoNombre(busqueda: string) {
 		this.productoApi.conultarProductoPorNombre('1', '1', busqueda).subscribe(
 			value => setTimeout(() => {
-				const prd = value;
 				this.productList = [];
 				this.productoRsType = value;
 				this.productList.push(...value.productos);
+				this.spinner.hide();
 			}, 200),
 			error => {
 				this.mostrarNotiicacion('Se genero un error interno', 'error');
@@ -72,10 +76,13 @@ export class ProductListComponent implements OnInit {
 	consultarProductoDescripcion(busqueda: string) {
 		this.productoApi.conultarProductoPorDescripcion('1', '1', busqueda).subscribe(
 			value => setTimeout(() => {
-				const prd = value;
 				this.productList = [];
+				console.log("respuesta["+value.productos.length+"]");
 				this.productoRsType = value;
-				this.productList.push(...value.productos);
+				if (this.productList.length > 0) {
+					this.productList.push(...value.productos);
+				}
+				this.spinner.hide();
 			}, 200),
 			error => {
 				this.mostrarNotiicacion('Se genero un error interno', 'error');
@@ -88,11 +95,10 @@ export class ProductListComponent implements OnInit {
 	consultarProductoId(idProducto: number) {
 		this.productoApi.conultarProductoPorId('1', '1', idProducto).subscribe(
 			value => setTimeout(() => {
-				const prd = value;
-				console.log("tamanio::" + value.productos.length);
 				this.productList = [];
 				this.productoRsType = value;
 				this.productList.push(...value.productos);
+				this.spinner.hide();
 			}, 200),
 			error => {
 				this.mostrarNotiicacion('Se genero un error interno', 'error');
@@ -103,17 +109,19 @@ export class ProductListComponent implements OnInit {
 	}
 
 	consultarProductoCategoria(idCategoria: number) {
+		console.log(idCategoria);
 		this.productoApi.consultarProductoPorCategoria('1', '1', idCategoria).subscribe(
 			value => setTimeout(() => {
-				const prd = value;
-				console.log("tamanio::" + value.productos.length);
 				this.productList = [];
 				this.productoRsType = value;
-				this.productList.push(...value.productos);
-
+				if (value.productos.length > 0) {
+					this.productList.push(...value.productos);
+				}
+				this.spinner.hide();
 			}, 200),
 			error => {
 				this.mostrarNotiicacion('Se genero un error interno', 'error');
+				this.spinner.hide();
 				console.error(JSON.stringify(error))
 			},
 			() => console.log('done')
@@ -121,18 +129,23 @@ export class ProductListComponent implements OnInit {
 	}
 
 	consultarProducto() {
+		this.spinner.show();
+
 		if ((this.selCategoria == null || this.selCategoria == 0) && this.tipoBusqueda == null) {
 			this.mostrarNotiicacion('Seleccione algun filtro', 'warning');
 		}
 		if (this.selCategoria != null && this.selCategoria > 0) {
 			this.consultarProductoCategoria(this.selCategoria);
+
 		} else if (this.conBusqueda != null) {
 			//tipoBusqueda
 			if (this.tipoBusqueda == 1) {
 				this.consultarProductoId(Number(this.conBusqueda));
+
 			} else if (this.tipoBusqueda == 2) {
 				if (this.conBusqueda.length > 3) {
 					this.consultarProductoNombre('%' + this.conBusqueda + '%');
+
 				} else {
 					this.errorInUserCreate = true;
 					this.errorMessage = 'Debe tener mas de 3 caracteres'
@@ -142,11 +155,13 @@ export class ProductListComponent implements OnInit {
 			else if (this.tipoBusqueda == 3) {
 				if (this.conBusqueda.length > 3) {
 					this.consultarProductoDescripcion('%' + this.conBusqueda + '%');
+
 				} else {
 					this.mostrarNotiicacion('Debe tener mas de 3 caracteres', 'error');
 				}
 			}
 		}
+
 	}
 	consultarProductoEspec() {
 		var fecha = new Date();

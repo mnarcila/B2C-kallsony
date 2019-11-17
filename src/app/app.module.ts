@@ -9,6 +9,7 @@ import { AppRoutes } from './app.routing';
 import { TranslateService } from './shared/services/translate.service';
 import { ProductModule } from './layouts/product/product.module';
 import { UserModule } from './layouts/user/user.module';
+import { NgxSpinnerModule } from "ngx-spinner";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AuthService } from './shared/services/auth.service';
@@ -35,6 +36,7 @@ export function setupTranslateFactory(service: TranslateService): Function {
 @NgModule({
 	declarations: [ AppComponent ],
 	imports: [
+		NgxSpinnerModule , 
 		BrowserModule,
 		BrowserAnimationsModule,
 		IndexModule,
@@ -58,7 +60,7 @@ export function setupTranslateFactory(service: TranslateService): Function {
 		tarjetaService,
 		FormBuilder,
 		envioPagoService,
-		MailSendService,
+		MailSendService, 
 		TarjetaCreditoService,
 		serviceEstadoProv,
 		{

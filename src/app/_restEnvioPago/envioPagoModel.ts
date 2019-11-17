@@ -2,6 +2,8 @@ interface ordenTrRequest {
   apellido: string;
   nombre: string;
   idCategoria: number;
+  nomCat: string, 
+  mail: string,
   direccion: string;
   pais: string;
   estado: string;
@@ -9,10 +11,12 @@ interface ordenTrRequest {
   idOrden: number;
   valorTotal: number;
   cantidadProductos: number;
+  proveedor : string; 
   items: Item[];
 }
 
 interface Item {
+  nombreProducto: string; 
   iddetorden: number;
   idOrden: number;
   idProducto: string;

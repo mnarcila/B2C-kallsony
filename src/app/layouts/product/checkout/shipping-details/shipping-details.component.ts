@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { ProductService } from '../../../../shared/services/product.service';
 import { ProductosInner } from '../../../../_restProducto';
 import { ToastrService } from "src/app/shared/services/toastr.service";
-import { formatDate } from "@angular/common";
+import { formatDate, PlatformLocation } from "@angular/common";
 import { Direccion, ClienteRsType, Cliente, Clientes, ClienteService, ClientesRsType } from "src/app/_restClientes";
 import { tarjetaService } from 'src/app/_tarjetaCredito/tarjeta.service';
 import { environment } from 'src/environments/environment.prod';
@@ -79,6 +79,7 @@ export class ShippingDetailsComponent implements OnInit {
 			value => {
 				value.datosBasicos.detalles.forEach(element => {
 					let tmpItem: Item = {
+						nombreProducto: '',
 						cantidad: element.cantidad,
 						idOrden: element.idOrden,
 						idProducto: '' + element.idProducto,
@@ -95,7 +96,23 @@ export class ShippingDetailsComponent implements OnInit {
 	}
 	enviarProcesoPago2(idOrden: number, items: Item[]) {
 		console.log("enviarProcesoPago2::" + idOrden + "|" + items);
+		var nomCategoria = () => {
+			switch (this.userDetails.idCategoria) {
+				case 1: {
+					return 'Dorado'
+				}
+				case 2: {
+					return 'Plateado'
+				}
+				case 3: {
+					return 'Platino'
+				}
+			}
+		}
 		let ordenTrRequest: ordenTrRequest = {
+			mail: this.userDetails.email,
+			nomCat: nomCategoria(),
+			proveedor: '',
 			nombre: this.userDetails.nombre,
 			apellido: this.userDetails.apellido,
 			cantidadProductos: this.cantidadTotal,
@@ -311,7 +328,7 @@ export class ShippingDetailsComponent implements OnInit {
 			this.toastService.success("Exito", this.errorMessage);
 		} else if (tipo == 'error') {
 			this.toastService.error("Error", this.errorMessage);
-		}else if(tipo == 'warn'){
+		} else if (tipo == 'warn') {
 			this.toastService.warning("warn", this.errorMessage);
 
 		}
@@ -339,7 +356,7 @@ export class ShippingDetailsComponent implements OnInit {
 		) {
 
 			this.verificarTC();
-		}else{
+		} else {
 			this.mostrarNotiicacion('Se deben diligenciar todos los campos', 'warn')
 		}
 

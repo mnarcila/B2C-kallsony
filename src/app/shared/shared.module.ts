@@ -26,8 +26,10 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { CdkTableModule } from "@angular/cdk/table";
 import { CdkTreeModule } from "@angular/cdk/tree";
+import { NgxSpinnerService, NgxSpinnerModule } from "ngx-spinner";
 @NgModule({
 	imports: [
+		NgxSpinnerModule,
 		CommonModule,
 		MDBBootstrapModule.forRoot(),
 		AngularFireModule.initializeApp(FireBaseConfig),

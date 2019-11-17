@@ -18,9 +18,10 @@ import { SharedModule } from "../../shared/shared.module";
 import { FavouriteProductsComponent } from "./favourite-products/favourite-products.component";
 import { CartProductsComponent } from "./cart-products/cart-products.component";
 import { CartCalculatorComponent } from "./cart-calculator/cart-calculator.component";
+import { NgxSpinnerService, NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
-	imports: [CommonModule, RouterModule.forChild(ProductRoutes), SharedModule, CheckoutModule],
+	imports: [NgxSpinnerModule , CommonModule, RouterModule.forChild(ProductRoutes), SharedModule, CheckoutModule],
 	declarations: [
 		ProductComponent,
 		BestProductComponent,

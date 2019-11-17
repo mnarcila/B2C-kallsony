@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core"; 
 import { fadeAnimation } from "./shared/animations/fadeIntRoute";
+import { NgxSpinnerService } from "ngx-spinner";
+
 declare var $: any;
 
 @Component({
@@ -11,7 +13,9 @@ declare var $: any;
 export class AppComponent implements OnInit {
   title = "app";
 
-  constructor( ) {}
+  constructor( 
+    private spinner: NgxSpinnerService,
+  ) {}
 
   ngOnInit() {
     $(document).ready(function() {

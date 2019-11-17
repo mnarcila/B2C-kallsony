@@ -13,8 +13,8 @@
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Contraseña</label>
-        <input type="password" class="form-control" id="loginPassword" name="loginPassword"
-          [(ngModel)]="user.password" autocomplete="current-password" placeholder="Password">
+        <input type="password" class="form-control" id="loginPassword" name="loginPassword" [(ngModel)]="user.password"
+          autocomplete="current-password" placeholder="Password">
       </div>
 
       <div class="text-center">
@@ -87,7 +87,8 @@
               <label for="tipoidentificacion">Tipo identificación</label>
 
 
-              <select class="form-control" [(ngModel)]="createUser.tipoidentificacion" id="tipoidentificacion">
+              <select class="form-control" value="tipoIdentificacion" [(ngModel)]="createUser.tipoidentificacion"
+                id="tipoidentificacion">
                 <option value='CC'>Cedula de Ciudadania</option>
                 <option value='CE'>Cedula de Extranjeria</option>
                 <option value='PAS'>Pasaporte</option>

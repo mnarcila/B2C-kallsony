@@ -8,9 +8,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CheckoutComponent } from './checkout.component';
 import { BillingDetailsComponent } from './billing-details/billing-details.component';
+import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
-	imports: [ CommonModule, SharedModule, CheckoutRoutingModule ],
+	imports: [ NgxSpinnerModule ,CommonModule, SharedModule, CheckoutRoutingModule ],
 	declarations: [
 		CheckoutComponent,
 		BillingDetailsComponent,
