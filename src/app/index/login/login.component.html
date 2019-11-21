@@ -53,17 +53,15 @@
               <input mdbActive type="email" id="email" class="form-control" name="email" [(ngModel)]="createUser.email"
                 placeholder="" mdbInputValidate [email]="true" autocomplete="email">
             </div>
-
-            <div class="form-group form-sm">
-              <label for="password">Clave</label>
-              <input mdbActive type="password" id="password" class="form-control" name="password"
-                [(ngModel)]="createUser.password" placeholder="" mdbInputValidate autocomplete="new-password">
-            </div>
-
             <div class="form-group form-sm">
               <label for="usuario">usuario</label>
               <input mdbActive type="text" id="usuario" class="form-control" name="usuario"
                 [(ngModel)]="createUser.usuario" placeholder="" mdbInputValidate autocomplete="usuario">
+            </div>
+            <div class="form-group form-sm">
+              <label for="password">Clave</label>
+              <input mdbActive type="password" id="password" class="form-control" name="password"
+                [(ngModel)]="createUser.password" placeholder="" mdbInputValidate autocomplete="new-password">
             </div>
 
             <div class="form-group form-sm">
@@ -85,10 +83,7 @@
 
             <div class="form-group form-sm">
               <label for="tipoidentificacion">Tipo identificación</label>
-
-
-              <select class="form-control" value="tipoIdentificacion" [(ngModel)]="createUser.tipoidentificacion"
-                id="tipoidentificacion">
+              <select name="tipoidentificacion" [(ngModel)]="tipoIden" class="form-control" id="tipoidentificacion">
                 <option value='CC'>Cedula de Ciudadania</option>
                 <option value='CE'>Cedula de Extranjeria</option>
                 <option value='PAS'>Pasaporte</option>

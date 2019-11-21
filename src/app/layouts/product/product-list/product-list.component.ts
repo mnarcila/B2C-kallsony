@@ -77,9 +77,9 @@ export class ProductListComponent implements OnInit {
 		this.productoApi.conultarProductoPorDescripcion('1', '1', busqueda).subscribe(
 			value => setTimeout(() => {
 				this.productList = [];
-				console.log("respuesta["+value.productos.length+"]");
+				console.log("respuesta[" + value.productos.length + "]");
 				this.productoRsType = value;
-				if (this.productList.length > 0) {
+				if (value.productos.length > 0) {
 					this.productList.push(...value.productos);
 				}
 				this.spinner.hide();
@@ -133,6 +133,7 @@ export class ProductListComponent implements OnInit {
 
 		if ((this.selCategoria == null || this.selCategoria == 0) && this.tipoBusqueda == null) {
 			this.mostrarNotiicacion('Seleccione algun filtro', 'warning');
+			this.spinner.hide();
 		}
 		if (this.selCategoria != null && this.selCategoria > 0) {
 			this.consultarProductoCategoria(this.selCategoria);
@@ -140,7 +141,13 @@ export class ProductListComponent implements OnInit {
 		} else if (this.conBusqueda != null) {
 			//tipoBusqueda
 			if (this.tipoBusqueda == 1) {
-				this.consultarProductoId(Number(this.conBusqueda));
+				 
+				if (!isNaN(Number(this.conBusqueda))) {
+					this.consultarProductoId(Number(this.conBusqueda));
+				} else {
+					this.mostrarNotiicacion('Esta búsqueda debe ser númerica, ingrese un número valido', 'warning');
+					this.spinner.hide();
+				}
 
 			} else if (this.tipoBusqueda == 2) {
 				if (this.conBusqueda.length > 3) {
@@ -159,9 +166,11 @@ export class ProductListComponent implements OnInit {
 				} else {
 					this.mostrarNotiicacion('Debe tener mas de 3 caracteres', 'error');
 				}
+			} else {
+				this.mostrarNotiicacion('Seleccione alguna opción', 'warn');
+				this.spinner.hide();
 			}
 		}
-
 	}
 	consultarProductoEspec() {
 		var fecha = new Date();

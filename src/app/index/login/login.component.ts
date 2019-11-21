@@ -10,7 +10,6 @@ import { MailSendService, Correos } from "src/app/_restMail";
 import { MailTemplate } from "src/app/_restMail/mailTemplate";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-declare var $: any;
 @Component({
 	selector: "app-login",
 	templateUrl: "./login.component.html",
@@ -31,10 +30,11 @@ export class LoginComponent implements OnInit {
 		tipoidentificacion: "",
 		numidentificacion: ""
 	};
-
+	tipoIden;
 	errorInUserCreate = false;
 	errorMessage: any;
 	createUser;
+	renderModal: true;
 	loginForm: FormGroup;
 	registerForm: FormGroup;
 	constructor(
@@ -120,11 +120,13 @@ export class LoginComponent implements OnInit {
 		cliente.nombre = userForm.value["nombre"];
 		cliente.apellido = userForm.value["apellido"];
 		cliente.telefono = userForm.value["telefono"];
-		cliente.tipoidentificacion = userForm.value["tipoidentificacion"];
+		cliente.tipoidentificacion = this.tipoIden;
 		cliente.numidentificacion = userForm.value["numidentificacion"];
 		cliente.origen = 'B2C';
 		cliente.estado = 'ACTIVO';
 		cliente.idCategoria = 2;
+		// console.log(userForm);
+
 		var mailTemplate = new MailTemplate();
 		if (this.validarCliente(cliente)) {
 			cliente.password = sha256(userForm.value["password"]);
@@ -132,10 +134,11 @@ export class LoginComponent implements OnInit {
 				value => setTimeout(() => {
 
 					if (value.status.statusCode == 200) {
-						console.log("idCreacion:" + value.idClienteCreado);
+
 						this.errorInUserCreate = true;
 						this.errorMessage = "Usuario registrado correctamente"
 						this.toastService.success("Exito", this.errorMessage);
+						this.errorInUserCreate = false;
 						let correo: Correos = {
 							destinatario: cliente.email,
 							mensaje: mailTemplate.getPlantillaMensaje(cliente.usuario),
@@ -143,24 +146,26 @@ export class LoginComponent implements OnInit {
 						}
 						this.mailSender.enviarCorreo('1', '1', correo).subscribe(
 							value => setTimeout(() => {
-								console.log("mail enviado");
+								document.location.reload();
 							}, 280),
 							error => {
 								console.log("error enviado mail " + error);
 							});
 
 					} else {
-						console.log("usuario no creado:" + value.status.statusDesc);
+
 						this.errorInUserCreate = true;
-						this.errorMessage = "usuario no creado:" + value.status.statusDesc;
-						this.toastService.error("Exito", this.errorMessage);
+						this.errorMessage = "usuario no creado, " + value.status.statusDesc;
+						this.toastService.error("Error", this.errorMessage);
+						this.errorInUserCreate = false;
 					}
 				}, 200),
 				error => {
 					console.error(JSON.stringify(error))
 					this.errorInUserCreate = true;
-					this.errorMessage = "usuario no creado:" + JSON.stringify(error);
-					this.toastService.error("Exito", this.errorMessage);
+					this.errorMessage = "usuario no creado, se presento un error pruebe mas tarde"
+					this.toastService.error("Error", this.errorMessage);
+					this.errorInUserCreate = false;
 				},
 				() => console.log('done')
 			);

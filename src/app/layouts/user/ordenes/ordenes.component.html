@@ -10,7 +10,7 @@
           <th>Fecha Solicitud</th>
           <th>Proveedor</th>
           <th>Despachador</th>
-         
+
           <th>Ver Detalle</th>
           <th>Cancelar</th>
 
@@ -23,7 +23,7 @@
             <td>{{ord.fechaSolicitud}}</td>
             <td>{{ord.nomproveedor}}</td>
             <td>{{ord.nomdespachador}}</td>
-        
+
             <td>
               <a data-toggle="modal" data-target="#viewDetail" (click)="verDetalle(ord)"
                 style="color:dodgerblue">VER</a>
@@ -40,46 +40,61 @@
   <!--Modal: Register Form-->
   <div class="modal fade" id="viewDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog cascading-modal" role="document">
-       
-        <div class="modal-content">
 
-          <div class="modal-header light-blue darken-3 white-text">
-            <h4 class="title">
-              <i class="fa fa-user-plus"></i> Detalle</h4>
-            <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body" style="overflow: scroll;height: 300px;">
-            <div>
-              Orden: {{idOrden}}
-              Dirección: {{direccion.direccion}}
-              Estado: {{estadoOrden}}
-              Estado Despacho: {{estadoDespacho}}
-            </div>
-            <strong *ngIf="listaDetalle.length == 0">Sin datos..</strong>
-            <div *ngIf="listaDetalle.length > 0" class="table-responsive">
-              <table class="table">
-                <thead class=" text-primary">
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-                  <th>Valor Unidad</th>
-                  <th>Estado</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let det of listaDetalle">
-                    <td>{{det.nomproducto}}</td>
-                    <td>{{det.cantidad}}</td>
-                    <td>{{det.valorUnidad | number }}</td>
-                    <td>{{det.estado}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+      <div class="modal-content">
 
-          </div>
+        <div class="modal-header light-blue darken-3 white-text">
+          <h4 class="title">
+            <i class="fa fa-user-plus"></i> Detalle</h4>
+          <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
-     
+        <div class="modal-body" style="overflow: scroll;height: 300px;">
+          <div>
+            <table>
+              <tr>
+                <td> Orden:</td>
+                <td> {{idOrden}}</td>
+              </tr>
+              <tr>
+                <td> Dirección:</td>
+                <td> {{direccion.direccion}}</td>
+              </tr>
+              <tr>
+                <td> Estado:
+                </td>
+                <td> {{estadoOrden}}</td>
+              </tr>
+              <tr>
+                <td> Estado Despacho:</td>
+                <td> {{estadoDespacho}}</td>
+              </tr>
+            </table>
+          </div>
+          <strong *ngIf="listaDetalle.length == 0">Sin datos..</strong>
+          <div *ngIf="listaDetalle.length > 0" class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Valor Unidad</th>
+                <th>Estado</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let det of listaDetalle">
+                  <td>{{det.nomproducto}}</td>
+                  <td>{{det.cantidad}}</td>
+                  <td>{{det.valorUnidad | number }}</td>
+                  <td>{{det.estado}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

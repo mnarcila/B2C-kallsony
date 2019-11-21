@@ -35,7 +35,7 @@ export class OrdenesComponent implements OnInit {
   direcciones: Direccion[] = [];
   direccion: Direccion;
   estadoOrden: string;
-  nuevoEstadOrden: number; 
+  nuevoEstadOrden: number;
   estadoDespacho: string;
   // Enable Update Button
   renderActualizar: boolean = false;
@@ -53,7 +53,7 @@ export class OrdenesComponent implements OnInit {
 
 
   ngOnInit() {
-
+    this.estadoOrden = 'PENDIENTE';
     this.loggedUser = this.authService.getUsers();
     this.getDireccion(this.loggedUser.usuario);
     this.colsultarOrdenXCliente('' + this.loggedUser.idCliente);
@@ -117,17 +117,14 @@ export class OrdenesComponent implements OnInit {
       }
     });
     if (orden.iddespachador != null) {
-
       this.consultarEstadoDetalleOrden(orden.idOrden, orden).then(
         () => {
           this.actualizarEstadoOrden(this.idOrden, orden);
-          // this.consultarDetalleOrden(orden.idOrden);
-
         }
       );
-    } else {
-      this.consultarDetalleOrden(orden.idOrden);
     }
+    this.consultarDetalleOrden(orden.idOrden);
+
   }
 
   traducirEstadoServientrega(estado: string): string {
@@ -135,31 +132,31 @@ export class OrdenesComponent implements OnInit {
     switch (estado) {
       case "NOTIFICADO": {
         estadoServientrega = 'Pendiente'
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
       case "EN TRAYECTO": {
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         estadoServientrega = "En transito"
         break;
       }
       case "NO SE PUDO ENTREGAR": {
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         estadoServientrega = "En transito"
         break;
       }
       case "ENTREGADO": {
-        this.nuevoEstadOrden= 5; 
+        this.nuevoEstadOrden = 5;
         estadoServientrega = "Entregado"
         break;
       }
       case "CANCELADO": {
-        this.nuevoEstadOrden= 6; 
+        this.nuevoEstadOrden = 6;
         estadoServientrega = "Cancelado"
         break;
       }
       default: {
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         estadoServientrega = 'Pendiente'
         break;
       }
@@ -171,42 +168,42 @@ export class OrdenesComponent implements OnInit {
     switch (estado) {
       case "Pending": {
         estadoDHL = "Pendiente"
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
       case "Collected": {
         estadoDHL = "En bodega"
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
       case "In Transit": {
         estadoDHL = "En transito"
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
       case "Arrived Hub": {
         estadoDHL = "En Bodega"
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
       case "Out For Delivery": {
         estadoDHL = "Enviado"
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
       case "Delivered": {
         estadoDHL = "Entregado"
-        this.nuevoEstadOrden= 5; 
+        this.nuevoEstadOrden = 5;
         break;
       }
       case "Cancelled": {
         estadoDHL = "Cancelado"
-        this.nuevoEstadOrden= 6; 
+        this.nuevoEstadOrden = 6;
         break;
       }
       default: {
         estadoDHL = "Pendiente"
-        this.nuevoEstadOrden= 4; 
+        this.nuevoEstadOrden = 4;
         break;
       }
     }
@@ -227,10 +224,17 @@ export class OrdenesComponent implements OnInit {
           this.estadoDespacho = this.traducirEstadoServientrega(exito.Response);
         }, error => {
           this.estadoDespacho = 'N.A'
+          this.nuevoEstadOrden = 5;
           console.log(error);
         });
-      } else {
+      } else if (orden.iddespachador == 6) {
+        //DEPRISA
+        this.estadoDespacho = 'ENVIADO DEPRISA'
+        this.nuevoEstadOrden = 5;
+      }
+      else {
         this.estadoDespacho = 'Sin despachador'
+        this.nuevoEstadOrden = 5;
       }
       //consultar despachadores
       //actualizar estado de la orden 
@@ -242,8 +246,8 @@ export class OrdenesComponent implements OnInit {
 
   actualizarEstadoOrden(idOrden: number, orden: OrdenM) {
 
-    orden.estado=this.nuevoEstadOrden;
-    
+    orden.estado = this.nuevoEstadOrden;
+    this.estadoOrden = this.traducirEstado(orden.estado);
     this.ordenesApi.actualizarOrdenPorId('1', '1', idOrden, orden).subscribe(
       value => {
         if (value.status.statusCode == 200) {
@@ -262,6 +266,7 @@ export class OrdenesComponent implements OnInit {
     this.detalleApi.conultarDetalleOrdenPorIdOrden('1', '1', idOrden).subscribe(
       value => setTimeout(() => {
         this.listaDetalle.push(...value.datosBasicos.detalles);
+
       }, 200),
       error => this.mostrarNotiicacion(error, 'error'),
       () => console.log('done')

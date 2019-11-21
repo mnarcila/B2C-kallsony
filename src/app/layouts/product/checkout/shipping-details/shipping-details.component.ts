@@ -15,8 +15,8 @@ import { environment } from 'src/environments/environment.prod';
 import { BillingService } from 'src/app/shared/services/billing.service';
 import { OrdenesComponent } from 'src/app/layouts/user/ordenes/ordenes.component';
 import { OrdenService, OrdenM, DetalleOrdenService, DetalleOrden, OrdenRsType } from 'src/app/_restOrdenes';
-import { promise } from 'protractor';
 import { Promise } from 'q';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { envioPagoService } from 'src/app/_restEnvioPago/envioPago.Service';
 import { TarjetaCreditoService, TarjetaCredito } from 'src/app/_restTarjetaCredito';
 
@@ -46,6 +46,7 @@ export class ShippingDetailsComponent implements OnInit {
 	pagoResponse: Creditcardpaymentresponse;
 	items: Item[] = [];
 	constructor(
+		public spinner: NgxSpinnerService,
 		private billingService: BillingService,
 		private envioPagoApi: envioPagoService,
 		private tarjetaApi: tarjetaService,
@@ -91,6 +92,7 @@ export class ShippingDetailsComponent implements OnInit {
 				this.enviarProcesoPago2(idOrden, items)
 			}, error => {
 				console.log("error enviarprocesopago1");
+				this.spinner.hide();
 			}
 		);
 	}
@@ -125,26 +127,29 @@ export class ShippingDetailsComponent implements OnInit {
 			idOrden: idOrden,
 			items: items
 		};
-		console.log(ordenTrRequest);
+		this.spinner.hide();
 		this.envioPagoApi.enviarPago(ordenTrRequest).subscribe(
 			value => {
-
 				if (value.status.statusCode == 200) {
+					console.log("final Proceso:200")
+
 					// this.mostrarNotiicacion('Se genero el pedido correctamente', 'exito');
 					this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
-
 				} else if (value.status.statusCode == 201) {
+					console.log("final Proceso:201")
+					this.spinner.hide();
 					// this.mostrarNotiicacion('Se genero la solicitud correctamente', 'exito');
 					// this.router.navigate(["/users/(profileOutlet:ordenes)"]);
 					this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
 				} else {
 					this.mostrarNotiicacion('ni 200 ni 201 :( ', 'error');
-					// this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
-
+					this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
 				}
 			},
 			error => {
-				this.mostrarNotiicacion(error, 'error');
+				this.spinner.hide();
+			}, () => {
+				this.spinner.hide();
 			}
 		);
 	}
@@ -173,7 +178,8 @@ export class ShippingDetailsComponent implements OnInit {
 					}, 200),
 					error => {
 						console.error(JSON.stringify(error))
-						this.mostrarNotiicacion('Error validando TC:' + error, 'error')
+						this.mostrarNotiicacion('Error validando Crear detalle:', 'error')
+						this.spinner.hide();
 					},
 					() => console.log('done')
 				);
@@ -182,6 +188,7 @@ export class ShippingDetailsComponent implements OnInit {
 			//ya se realizaron las consultas devolver valores 
 			// if (itemsitos.length > 0) {
 			// 	console.log("resolvio la promesa");
+
 			resolve(1);
 			// } else {
 			// 	console.log("rechazo la promesa");
@@ -201,12 +208,13 @@ export class ShippingDetailsComponent implements OnInit {
 			valorTotal: this.valorTotal,
 			idCliente: this.userDetails.idCliente,
 			estado: 1,
+			fechaAprobacion: fecha_actual,
 			fechaSolicitud: fecha_actual,
 			idDireccion: this.direccion.iddireccion,
 			origen: 'B2C',
 			cantidadProductos: this.cantidadTotal
 		}
-		console.log(orden);
+
 		this.ordenApi.registrarOrden('1', '1', orden).subscribe(
 			value => setTimeout(() => {
 				let idOrden = value.datosBasicos.ordenes[0].idOrden;
@@ -217,7 +225,8 @@ export class ShippingDetailsComponent implements OnInit {
 			}, 200),
 			error => {
 				console.error(JSON.stringify(error))
-				this.mostrarNotiicacion('Error validando TC:' + error, 'error')
+				this.mostrarNotiicacion('Error validando TC, Por favor intente mas tarde', 'error')
+				this.spinner.hide();
 			},
 			() => console.log('done')
 		);
@@ -287,11 +296,16 @@ export class ShippingDetailsComponent implements OnInit {
 				this.pagoResponse = res.creditcardpaymentresponse;
 				if (res.creditcardpaymentresponse.cabaceraSalida.tipoRespuesta) {
 					this.crearOrden();
+
 				} else {
 					this.mostrarNotiicacion('No se pudo realizar el pago, intente con otra TC', 'error')
+					this.spinner.hide();
 				}
 				console.log('response is ', res.creditcardpaymentresponse);
-			}, error => { this.mostrarNotiicacion('Error validando TC:' + error, 'error') });
+			}, error => {
+				this.mostrarNotiicacion('Error validando TC:' + error, 'error')
+				this.spinner.hide();
+			});
 	}
 	verificarTC() {
 		//validar aqui
@@ -310,13 +324,15 @@ export class ShippingDetailsComponent implements OnInit {
 				this.verifyResponse = res.creditcardverifyresponse;
 				if (res.creditcardverifyresponse.cabeceraSalida.tipoRespuesta) {
 					this.realizarPagoTC();
+
 				} else {
 					this.mostrarNotiicacion('Error validando TC intente con una diferente.', 'error')
+					this.spinner.hide();
 				}
 				//si todo sale bien debe ir a consultar el otro servicio 
 			}, (error) => {
 				this.mostrarNotiicacion('Error validando TC:' + error, 'error')
-
+				this.spinner.hide();
 			});
 	}
 
@@ -339,25 +355,22 @@ export class ShippingDetailsComponent implements OnInit {
 
 
 	updateUserDetails(form: NgForm) {
-		// this.tc
-		// listTC
-		console.log(this.listTC)
-		console.log(this.tc)
+		this.spinner.show();
 
 		if (this.tc == null || this.tc == '') {
 			this.tc = this.listTC.numtarjeta;
 		}
-		console.log("valor para procesar la tC:" + this.tc)
+
 		if ((this.tc != '' && this.tc != null) &&
 			(this.direccion != null && this.direccion != null) &&
 			(this.fecha != null && this.fecha != '') &&
 			(this.cuotas != null && this.cuotas != 0) &&
 			(this.cvc != null && this.cvc != '')
 		) {
-
 			this.verificarTC();
 		} else {
 			this.mostrarNotiicacion('Se deben diligenciar todos los campos', 'warn')
+			this.spinner.hide();
 		}
 
 	}
