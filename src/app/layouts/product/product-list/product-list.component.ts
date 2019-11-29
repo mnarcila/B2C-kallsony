@@ -157,6 +157,7 @@ export class ProductListComponent implements OnInit {
 					this.errorInUserCreate = true;
 					this.errorMessage = 'Debe tener mas de 3 caracteres'
 					this.toastService.error("Error while Creating User", this.errorMessage);
+					this.spinner.hide();
 				}
 			}
 			else if (this.tipoBusqueda == 3) {
@@ -165,6 +166,7 @@ export class ProductListComponent implements OnInit {
 
 				} else {
 					this.mostrarNotiicacion('Debe tener mas de 3 caracteres', 'error');
+					this.spinner.hide();
 				}
 			} else {
 				this.mostrarNotiicacion('Seleccione alguna opción', 'warn');

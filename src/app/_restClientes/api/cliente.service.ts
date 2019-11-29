@@ -34,10 +34,9 @@ import { Configuration } from '../configuration';
 
 @Injectable()
 export class ClienteService {
-    //http://localhost:8280/OMS/Clientes/v1
-    // http://10.39.1.149:8280/OMS/Clientes/v1'; // endpoint
-    //http://10.39.1.156:8210/esb-skynet ; // bus 
-    protected basePath = 'http://10.39.1.149:8280/OMS/Clientes/v1';
+    
+    protected basePath = 'http://10.39.1.156:8210/esb-skynet';
+    // protected basePath = 'http://10.39.1.149:8280/OMS/Clientes/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

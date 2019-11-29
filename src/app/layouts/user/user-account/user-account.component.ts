@@ -5,7 +5,7 @@ import { ClienteRsType, Cliente, Clientes, ClienteService, ClientesRsType } from
 import { NgForm, EmailValidator } from "@angular/forms";
 import { ToastrService } from "./../../../shared/services/toastr.service";
 import { Router, ActivatedRoute } from "@angular/router";
-
+import { sha256, sha224 } from 'js-sha256';
 @Component({
 	selector: 'app-user-account',
 	templateUrl: './user-account.component.html',
@@ -45,7 +45,7 @@ export class UserAccountComponent implements OnInit {
 		var clave: string = userForm.value["clave"];
 		var telefono: string = userForm.value["telefono"];
 		this.loggedUser.email = correo;
-		this.loggedUser.password = clave;
+		this.loggedUser.password = sha256(clave);
 		this.loggedUser.telefono = telefono;
  
 
@@ -62,6 +62,8 @@ export class UserAccountComponent implements OnInit {
 						this.toastService.success("Exito", this.errorMessage);
 						this.errorInUserCreate = false;
 						this.errorMessage = ""
+						//recargar usuario de sesion
+						this.authService.setUser(this.loggedUser);
 						this.permitirUpdate();
 						this.router.navigate(["users"]);
 					} else {

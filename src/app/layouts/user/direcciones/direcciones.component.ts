@@ -77,7 +77,7 @@ export class DireccionesComponent implements OnInit {
   crearTarjetaEvent(userForm: NgForm) {
 
     this.tc.idcliente = this.loggedUser.idCliente;
-    this.tc.fechacreacion = formatDate(new Date(), 'dd-MM-yyyy', 'en')
+    this.tc.fechacreacion = formatDate(new Date(), 'dd-MM-yyyy', 'en').toString();
     this.tc.estado = 'ACTIVO';
     this.tc.franquicia = this.franquicia;
 
@@ -131,6 +131,8 @@ export class DireccionesComponent implements OnInit {
   }
   eliminarTarjeta(tc: TarjetaCredito) {
     tc.estado = 'INACTIVO';
+    tc.fechacreacion=formatDate(tc.fechacreacion, 'dd-MM-yyyy', 'en').toString();
+    // '11-11-2018';
     this.tarjetaCreditoApi.actualizarTarjetaDeCredito('1', '1', tc).subscribe(
       value => setTimeout(() => {
         this.mostrarNotiicacion('Modificado con exito', 'exito');

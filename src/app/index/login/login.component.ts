@@ -9,7 +9,7 @@ import { sha256, sha224 } from 'js-sha256';
 import { MailSendService, Correos } from "src/app/_restMail";
 import { MailTemplate } from "src/app/_restMail/mailTemplate";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+declare var $: any;
 @Component({
 	selector: "app-login",
 	templateUrl: "./login.component.html",
@@ -146,12 +146,17 @@ export class LoginComponent implements OnInit {
 						}
 						this.mailSender.enviarCorreo('1', '1', correo).subscribe(
 							value => setTimeout(() => {
-								document.location.reload();
+
 							}, 280),
 							error => {
 								console.log("error enviado mail " + error);
 							});
 
+							// this.toastService.success("Registrado", "Usuario registrado con exito");
+						setTimeout((router: Router) => {
+							$("#createUserForm").modal("hide");
+							this.router.navigate(["login"]);
+						}, 1500);
 					} else {
 
 						this.errorInUserCreate = true;

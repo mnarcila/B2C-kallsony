@@ -4,10 +4,13 @@
     <p>Valor Total: {{valorTotal | number}}</p>
     <form class="needs-validation" #userDetailsForm="ngForm" (ngSubmit)="updateUserDetails(userDetailsForm)">
       <div class="mb-3">
-        <label for="direccion">Dirección</label>
+        <label for="direccion">Dirección </label>
+        <label for="direccion" style="margin-left: 2px;color:gray;font-size: small; font-style: italic;">Seleccione
+          alguna dirección de domicilio</label>
+
         <select class="custom-select d-block w-100" id="direccion" required [(ngModel)]="direccion" name="direccion">
           <option value=""> </option>
-          <option *ngFor="let dir of direcciones" [ngValue]="dir">{{dir.direccion}}</option>
+          <option *ngFor="let dir of direcciones" [ngValue]="dir">{{dir.direccion +'- '+ dir.ciudad }}</option>
         </select>
         <div class="invalid-feedback">
           Por favor ingrese dirección
@@ -15,6 +18,9 @@
       </div>
       <div class="mb-3">
         <label for="direccion">TC - Inscritas </label>
+        <label for="tcc" style="margin-left: 4px;color:gray;font-size: small; font-style: italic;">Seleccione una
+          TC o Ingrese la que desea usar en el campo tarjeta de crédito</label>
+
         <select class="custom-select d-block w-100" id="listTC" required [(ngModel)]="listTC" name="listTC">
           <option value=""> </option>
           <option *ngFor="let ta of tcs" [ngValue]="ta">{{ta.numtarjeta}}</option>
@@ -22,15 +28,16 @@
       </div>
       <div class="row">
         <div class="col-md-5 mb-3">
-          <label for="tcc">Tarjeta de Credito</label>
-          <input type="text" class="form-control" id="tcc" placeholder="" [(ngModel)]="tc" name="tcc" required>
+          <label for="tcc">Tarjeta de Crédito</label>
+          <input type="text" class="form-control" id="tcc" placeholder="Tarjeta de crédito" [(ngModel)]="tc" name="tcc"
+            required>
           <div class="invalid-feedback">
             Se requiere ingresar TC.
           </div>
         </div>
         <div class="col-md-4 mb-2">
           <label for="fechaVen">Fecha Vencimiento</label>
-          <input type="text" class="form-control" id="fechaVen" placeholder="" [(ngModel)]="fecha" name="fechaVen"
+          <input type="text" class="form-control" id="fechaVen" placeholder="MM/YY" [(ngModel)]="fecha" name="fechaVen"
             required>
           <div class="invalid-feedback">
             Se requiere ingresar TC.
@@ -50,6 +57,21 @@
             <option value="7">7</option>
             <option value="8">8</option>
             <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
           </select>
 
           <div class="invalid-feedback">
@@ -59,7 +81,7 @@
 
         <div class="col-md-2 mb-1">
           <label for="tcc">CVC</label>
-          <input type="text" class="form-control" id="cvc" placeholder="" [(ngModel)]="cvc" name="cvc" required>
+          <input type="text" class="form-control" id="cvc" placeholder="XXX" [(ngModel)]="cvc" name="cvc" required>
           <div class="invalid-feedback">
             Se requiere ingresar TC.
           </div>
@@ -70,4 +92,4 @@
     </form>
   </div>
 
-  <ngx-spinner></ngx-spinner> 
+  <ngx-spinner></ngx-spinner>

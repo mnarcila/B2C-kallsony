@@ -29,6 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class CategoriaService {
     //'http://localhost:8387/OMS/categoria/v1'
+    // protected basePath = 'http://10.39.1.156:8210/esb-skynet';
     protected basePath = 'http://10.39.1.149:8387/OMS/categoria/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();

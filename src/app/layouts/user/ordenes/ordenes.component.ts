@@ -122,8 +122,9 @@ export class OrdenesComponent implements OnInit {
           this.actualizarEstadoOrden(this.idOrden, orden);
         }
       );
+    }else{
+      this.consultarDetalleOrden(orden.idOrden);
     }
-    this.consultarDetalleOrden(orden.idOrden);
 
   }
 

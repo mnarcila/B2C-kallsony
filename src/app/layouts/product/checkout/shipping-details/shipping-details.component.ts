@@ -132,15 +132,19 @@ export class ShippingDetailsComponent implements OnInit {
 			value => {
 				if (value.status.statusCode == 200) {
 					console.log("final Proceso:200")
-
+					this.spinner.hide();
 					// this.mostrarNotiicacion('Se genero el pedido correctamente', 'exito');
-					this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
+					setTimeout((router: Router) => {
+						this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
+					}, 1500);
+					// this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
 				} else if (value.status.statusCode == 201) {
 					console.log("final Proceso:201")
 					this.spinner.hide();
-					// this.mostrarNotiicacion('Se genero la solicitud correctamente', 'exito');
-					// this.router.navigate(["/users/(profileOutlet:ordenes)"]);
-					this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
+					setTimeout((router: Router) => {
+						this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
+					}, 1500);
+					// this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
 				} else {
 					this.mostrarNotiicacion('ni 200 ni 201 :( ', 'error');
 					this.router.navigate(['checkouts', { outlets: { checkOutlet: ['result'] } }])
@@ -212,7 +216,7 @@ export class ShippingDetailsComponent implements OnInit {
 			fechaSolicitud: fecha_actual,
 			idDireccion: this.direccion.iddireccion,
 			origen: 'B2C',
-			cantidadProductos: this.cantidadTotal
+			cantidadProductos: 0//this.cantidadTotal
 		}
 
 		this.ordenApi.registrarOrden('1', '1', orden).subscribe(
@@ -303,7 +307,8 @@ export class ShippingDetailsComponent implements OnInit {
 				}
 				console.log('response is ', res.creditcardpaymentresponse);
 			}, error => {
-				this.mostrarNotiicacion('Error validando TC:' + error, 'error')
+				console.log(error)
+				this.mostrarNotiicacion('Error realizando pago TC:' + error, 'error')
 				this.spinner.hide();
 			});
 	}
@@ -331,6 +336,7 @@ export class ShippingDetailsComponent implements OnInit {
 				}
 				//si todo sale bien debe ir a consultar el otro servicio 
 			}, (error) => {
+				console.log(error)
 				this.mostrarNotiicacion('Error validando TC:' + error, 'error')
 				this.spinner.hide();
 			});
@@ -356,18 +362,22 @@ export class ShippingDetailsComponent implements OnInit {
 
 	updateUserDetails(form: NgForm) {
 		this.spinner.show();
-
+		console.log("valor direccion")
+		console.log(this.direccion);
 		if (this.tc == null || this.tc == '') {
 			this.tc = this.listTC.numtarjeta;
 		}
 
 		if ((this.tc != '' && this.tc != null) &&
-			(this.direccion != null && this.direccion != null) &&
+			(this.direccion.iddireccion != 0 && this.direccion.iddireccion != null) &&
 			(this.fecha != null && this.fecha != '') &&
 			(this.cuotas != null && this.cuotas != 0) &&
 			(this.cvc != null && this.cvc != '')
 		) {
+			//TODO
 			this.verificarTC();
+			// this.realizarPagoTC();
+			// this.crearOrden();
 		} else {
 			this.mostrarNotiicacion('Se deben diligenciar todos los campos', 'warn')
 			this.spinner.hide();

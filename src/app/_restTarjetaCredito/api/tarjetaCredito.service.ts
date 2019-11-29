@@ -27,8 +27,8 @@ import { Configuration }                                     from '../configurat
 
 @Injectable()
 export class TarjetaCreditoService {
-
-    protected basePath = 'http://10.39.1.149:8569/OMS/TarjetaCredito/v1';
+    protected basePath = 'http://10.39.1.156:8210/esb-skynet';
+    // protected basePath = 'http://10.39.1.149:8569/OMS/TarjetaCredito/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

@@ -27,8 +27,8 @@ import { DetalleOrden } from '../model/detalleOrden';
 
 @Injectable()
 export class DetalleOrdenService {
-
-    protected basePath = 'http://10.39.1.149:8096/OMS/Ordenes/v1';
+    protected basePath = 'http://10.39.1.156:8210/esb-skynet';
+    // protected basePath = 'http://10.39.1.149:8096/OMS/Ordenes/v1';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

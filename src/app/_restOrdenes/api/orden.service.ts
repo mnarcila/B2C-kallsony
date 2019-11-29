@@ -25,11 +25,10 @@ import { Configuration } from '../configuration';
 
 
 @Injectable()
-export class OrdenService {
-    //http://10.39.1.149:8096/OMS/Ordenes/v1
-    // http://10.39.1.149:8280/OMS/Clientes/v1'; // endpoint
-    //http://10.39.1.156:8210/esb-skynet ; // bus 
-    protected basePath = 'http://10.39.1.149:8096/OMS/Ordenes/v1';
+export class OrdenService { 
+    
+    // protected basePath = 'http://10.39.1.149:8096/OMS/Ordenes/v1';
+    protected basePath = 'http://10.39.1.156:8210/esb-skynet';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
